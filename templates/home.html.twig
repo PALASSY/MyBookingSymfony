@@ -1,0 +1,145 @@
+{# Twig est un langage d'interpolation: càd il peut interpreter les variables dans la class de Controller (AbstractController) #}
+
+ 
+ 
+ {% extends 'base.html.twig' %} 
+
+    
+{% block body %}
+
+    {# 
+        <h1>Ma page home</h1>
+        {# Générer un URL avec une function PATH pour accéder à une page (1er param c'est le nom d'URL(qui est un tableau), le 2èm param c'est les autres variables présenté dans un tableau comme celui de JS càd séparé par le : (même syntaxe) ) #}
+    {#
+       <a href="{{ path('hello-nometaccess', {'nom': 'PAULA', 'access':'Visiteur'}) }}">Profil</a>
+
+       {# Structure de contrôle : affichage avec une condition #}
+    {#
+        {% if access == 'admin' %}
+            <p> Bievenue Administrateur </p>
+        {% else %}
+            <p> Bienvenue cher visiteur </p>
+        {% endif %}
+
+        {# Structure de contrôle : affichage avec une boucle #}
+        {#     itocle ici est une variable créée qui est clé aussi   la virgule sépare la clé et la valeur   itovaleur est le nom de la valeur crée c'est la valeur #}
+    {# 
+        {% for itocle,itovaleur in tableau %}
+            {# Faire une condition en utilisant la variable loop (si la 1ère itération de la boucle est true)  #}
+    {#      
+        {% if loop.first or loop.last %}
+          {# Alors affichage clé/valeur dont clé en gras #}
+    {#    
+          <p><strong> {{ itocle|lower }} </strong> est un: {{ itovaleur }} </p>
+          {% else %}
+            {# Alors affichage clé/valeur simple #}
+    {#      
+                <p> {{ itocle }} est un: {{ itovaleur }} </p>
+              {% endif %}
+          {% endfor %} 
+    #}  
+
+
+
+
+    {# body extrait dans bootswatch.com #} 
+    <main class="container">
+
+      <div class="jumbotron mt-5">
+        <h1 class="h2">{{ titre }}</h1>
+        <p class="lead">C'est un simple jumbotron</p>
+        <hr class="my-4">
+        <p>Utilise le typographie</p>
+        <p class="lead">
+          <a href="#" class="btn btn-primary" role="button">+ d'infos</a>
+        </p>
+      </div> 
+
+      <h3 class="h1 mt-5 mb-3">Offres spéciales</h3>
+      <section class="row">
+        <article class="col-md-4">
+          <div class="card mb-3">
+            <h3 class="card-header">3 chambres<strong> 300 &euro;</strong>/nuit</h3>
+            <img style="height: 200; width:100%; display: block;" src="https://placeimg.com/640/480/arch" alt="Card image">
+            <div class="card-body">
+              <h5 class="card-title">Loft à Londres</h5>
+              <p>Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores</p>
+              <a href="#" class="btn btn-primary">+ d'infos</a>
+            </div>
+            <div class="card-footer text-muted">
+              Pas encore noté
+            </div>
+        </article>
+        <article class="col-md-4">
+          <div class="card mb-3">
+            <h3 class="card-header">2 chambres<strong> 500 &euro;</strong>/nuit</h3>
+            <img style="height: 200; width:100%; display: block;" src="https://placeimg.com/640/480/nature" alt="Card image">
+            <div class="card-body">
+              <h5 class="card-title">New York</h5>
+              <p>Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores</p>
+              <a href="#" class="btn btn-primary">+ d'infos</a>
+            </div>
+            <div class="card-footer text-muted">
+              Pas encore noté
+            </div>
+        </article>
+        <article class="col-md-4">
+          <div class="card mb-3">
+            <h3 class="card-header">2 chambres<strong> 322 &euro;</strong>/nuit</h3>
+            <img style="height: 200px; width:100%; display: block;" src="https://placeimg.com/640/480/people" alt="Card image">
+            <div class="card-body">
+              <h5 class="card-title">Dubai</h5>
+              <p>Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores</p>
+              <a href="#" class="btn btn-primary">+ d'infos</a>
+            </div>
+            <div class="card-footer text-muted">
+              Pas encore noté
+            </div>
+        </article>
+      </section>
+
+      <h3 class="h1 mt-5 mb-3">Nos meilleurs annonçeurs</h3>
+      <section class="row">
+        <article class="col-md-3">
+          <div class="card mb-3">
+            <h3 class="card-header text-white bg-warning">Cooper Mike</h3>
+            <div class="card-body">
+              <img src="https://place-hold.it/64x64" alt="avatar de ..." class="float-left">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+              <a href="#" class="btn btn-warning">+ d'infos</a>
+            </div>
+        </article>
+        <article class="col-md-3">
+          <div class="card mb-3">
+            <h3 class="card-header text-white bg-warning">Jarod Steeve</h3>
+            <div class="card-body">
+              <img src="https://place-hold.it/64x64" alt="avatar de ..." class="float-left">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+              <a href="#" class="btn btn-warning">+ d'infos</a>
+            </div>
+        </article>
+        <article class="col-md-3">
+          <div class="card mb-3">
+            <h3 class="card-header text-white bg-warning">Amir Yasar</h3>
+            <div class="card-body">
+              <img src="https://place-hold.it/64x64" alt="avatar de ..." class="float-left">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+              <a href="#" class="btn btn-warning">+ d'infos</a>
+            </div>
+        </article>
+        <article class="col-md-3">
+          <div class="card mb-3">
+            <h3 class="card-header text-white bg-warning">Booby Brown</h3>
+            <div class="card-body">
+              <img src="https://place-hold.it/64x64" alt="avatar de ..." class="float-left">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+              <a href="#" class="btn btn-warning">+ d'infos</a>
+            </div>
+        </article>
+      </section>
+
+
+    </main>       
+ 
+{% endblock %}
+

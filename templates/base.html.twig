@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome on mybooking
+			{% endblock %}
+		</title>
+		{# CSS minifié de bootswatch.com #}
+		<link
+		rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+		{# CSS #}
+		<link
+		rel="stylesheet" type="text/css" href="/css/app.css">
+
+		{# JS #}
+		<script src="/js/jquery.compact.js"></script>
+
+		{# Run `composer require symfony/webpack-encore-bundle` and uncomment the following Encore helpers to start using Symfony UX #}
+		{% block stylesheets %}
+			{#{{ encore_entry_link_tags('app') }}#}
+		{% endblock %}	
+		
+	</head>
+	<body>
+
+		{# navbar extrait dans bootswatch.com factorisé et envoyé dans templates/inc/header.html.twig #}
+		{% include 'inc/header.html.twig' %}
+
+		<!--Message flash : On va récupérer à l'aide d'une boucle le label/messages dans le Global app et sa methode flashes -->
+		{% for label,messages in app.flashes %}
+			<div
+				class="container">
+				<!--Le messages est un tableau et il faut le récupérer à nouveau à l'aide d'une boucle -->
+				{% for message in messages %}
+					<div class="alert alert-{{label}}">
+						<p>{{message|raw}}</p>
+					</div>
+				{% endfor %}
+			</div>
+		{% endfor %}
+
+
+		{% block header %}{% endblock %}
+		{% block body %}{% endblock %}
+		{% block javascripts %}
+			{#{{ encore_entry_script_tags('app') }}#}
+		{% endblock %}
+
+
+		{# Bootstrap core Javascript factorisé et envoyé dans templates/inc/footer.html.twig #}
+		{% include 'inc/footer.html.twig' %}
+
+
+	</body>
+</html>

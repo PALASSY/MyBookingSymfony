@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{# trouver le champ par rapport à son ADN(slug) #}
+{% block title %}{{ad.title}}{% endblock %}
+
+{% block body %}
+
+    <div style="background-image:url({{ad.coverImage}})" class="titreAd  overlay">
+        <div class="container">
+            <h1>{{ad.title}}</h1>
+            <p>{{ad.introduction}}</p>
+            <p>{{ad.rooms}} chambres<strong> {{ad.price}} &euro;</strong>/nuit</p>
+            <a href="#" class="btn btn-warning">Réserver !</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-8 mb-3">
+                {# |raw veut dire sans balise HTML #}
+                {{ad.content|raw}}
+
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                         {# Ici on récupére les images secondaires spécialement pour les indicateurs et le mode active #}
+                         {% for imageentity in ad.yes %}
+                            {# ainsi les indicateurs sont en dur, alors on utilise => loop.index0 càd la variable de 0 jusqu'au nombre total d'images secondaires #}
+                            {# ici tous les <button> sont en mode active, alors on utilise => loop.first càd seul le 1er variable est en mode active #}
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{loop.index0}}" class="{% if loop.first  %}active{% endif %}" aria-current="true" aria-label="Slide 1"></button>
+                        {% endfor %}
+                    </div>
+                    <div class="carousel-inner">
+                        {# Ici on récupére les images secondaires pour les affichées en carousel #}
+                        {% for imageentity in ad.yes %}
+                            {# ici tous les <div> sont en mode active, alors on utilise => loop.first càd seul le 1er variable est en mode active #}
+                            <div class="carousel-item {% if loop.first  %}active{% endif %}">
+                                <img src="{{imageentity.url}}" class="d-block w-100" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h1 class="h4">{{ad.title}}</h1>
+                                    <p>{{imageentity.caption}}</p>
+                                </div>                                    
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"     data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Précédent</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Suivant</span>
+                    </button>
+                </div>
+
+            </div>
+
+
+            <div class="col">
+                <div class="row">
+                    <div class="col-4">
+                        <img src="https://place-hold.it/64x64">
+                    </div>
+                    <div class="col">
+                        <h3>PALASSY Nelly</h3>
+                        <span class="bg bg-warning">3 annonces</span>
+                    </div>
+                </div>
+                 <p>Iis igitur est difficilius satis facere, qui se Latina scripta dicunt contemnere. in quibus hoc primum est in quo admirer, cur in gravissimis rebus non delectet eos sermo patrius, cum idem fabellas Latinas ad verbum e Graecis expressas non inviti legant. quis enim tam inimicus paene nomini Romano est, qui Ennii Medeam aut Antiopam Pacuvii spernat aut reiciat, quod se isdem Euripidis fabulis delectari dicat, Latinas litteras oderit?</p>
+
+            </div>         
+        </div>
+    </div> 
+    
+    
+
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{# Création de nouveau block pour personnalisé le champs de 
+collection #}
+{% block _annonce_yes_widget %}
+	<p>Ici vous pouvez ajouter des images supplémentaires</p>
+	<input type="hidden" id="widget-count" value="0">
+	<button type="button" class="btn btn-info" id="addcollection-image">Ajouter une image</button>
+	{# Affichage des champs de collection #}
+	{{form_widget(form)}}
+{% endblock %}
+
+
+{# Création de nouveau block pour afficher le label/widget/
+help....mais pas l'ID avec(row) et (entry)indique que celui de 
+la collection #}
+{% block _annonce_yes_entry_row %}
+	{# Affichage des champs #}
+	{{form_widget(form)}}
+	{#{{dump(form)}}#}
+{% endblock %}
+
+{# Création des nouveau block pour apporter modification de 
+Collection et uniquement les champs #}
+{% block _annonce_yes_entry_widget %}
+	{# Ajouter un ID dynamique à chaque <div> parent pour cibler 
+	la suppression de ces champs si besoin la variable id ici 
+	c'est une propriété de (form) #}
+	<div class="form-group mt-3" id="block_{{id}}">
+		<div class="row">
+			<div class="col-md-10 col-10">
+				<div class="row">
+					<div class="col">
+						{{form_widget(form.url)}}
+					</div>
+					<div class="col">
+						{{form_widget(form.caption)}}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2 col-2">
+				<button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">X</button>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+
+{# Instruction avec JS pour récupérer/modifier/re-injecter la 
+data-prototype  --->>>c'est factoriser dans /js/ad.js
+{% block javascripts %}
+  <script></script>
+{% endblock %} #}
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	{# création des blocks pour form_theme #}
+	{# Affichages de tous les champs avec la boucle(row) et la 
+	personnalisation de <div> #}
+	{# {% block form_row %}
+		{# {{dump()}} #}
+	
+	{# <div
+			class="form-group mb-3">
+			{# Ajout des label #}
+	{# {{ form_label(form)}}
+	
+			{# Ajout des champs #}
+	{# {{form_widget(form)}}
+	
+		</div>
+	{% endblock %} #}
+	
+	{# Modification des champs de type text #}
+	{# {% block text_widget %}
+	
+		{# Ici les variables dans les attr de <input> sont des 
+	propriétés dans chaque (form) c'est dump() qui montre toutes 
+	ces propriétés #}
+	{# <input type="text" name="{{ full_name }}" id="{{ id}}" 
+	class="form_control">
+	{% endblock %}
+	
+	
+	{# Modification des champs de type textarea #}
+	{# {% block textarea_widget %}
+	
+		{# Ici les variables dans les attr de <textarea> sont des 
+	propriétés dans chaque (form) 
+															c'est dump() qui montre toutes ces 
+	propriétés #}
+	{# <textarea name="{{ full_name }}" id="{{ id}}" 
+	class="form_control" cols="30" rows="10"></textarea>
+	{% endblock %}
+	
+	{# Modification des champs de FileType #}
+	{# {% block file_widget %}
+	
+		{# Ici les variables dans les attr de <input> sont des 
+	propriétés dans chaque (form) 
+															c'est dump() qui montre toutes ces 
+	propriétés #}
+	{# <input type="file" name="{{ full_name }}" id="{{ id}}" 
+	class="form_control">
+	{% endblock %}
+	
+	{# Modification des champs de type nombre #}
+	{# {% block number_widget %}
+	
+		{# Ici les variables dans les attr de <input> sont des 
+	propriétés dans chaque (form) 
+										c'est dump() qui montre toutes ces 
+	propriétés #}
+	{# <input type="number" name="{{ full_name }}" id="{{ id}}" 
+	class="form_control">#}
+	{# {% endblock %}#}
+
