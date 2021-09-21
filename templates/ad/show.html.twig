@@ -56,17 +56,26 @@
             </div>
 
 
+            {# A partir d'ici on utilise L'Entity User.php #}
             <div class="col">
+            {# Pour éviter la répétion de la méthode (ad.author) on va crée une varible moins  longue #}
+            {% set a = ad.author %}
+            {% set url = path('user_show',{'slug':a.slug}) %}
                 <div class="row">
                     <div class="col-4">
-                        <img src="https://place-hold.it/64x64">
+                        <a href="{{ url }}">
+                            <img src="{{a.avatar}}" alt="{{a.fullname}}" class="avatar ">
+                        </a>    
                     </div>
-                    <div class="col">
-                        <h3>PALASSY Nelly</h3>
-                        <span class="bg bg-warning">3 annonces</span>
+                    <div class="col fullname">
+                        <a href="{{ url }}">
+                            <h4>{{a.fullname}}</h4>
+                        </a>
+                        {# Pour avoir le nombre d'annonces publiées par l'author, on passe sur la variable ads de l'Entity User.php qui retourne un tableau et on stipule qu'on veut récupére la longeur de ce tableau #}
+                        <span class="bg bg-warning">{{a.ads|length}} {% if a.ads|length >1  %} annonces {% else %} annonce {% endif %}</span>
                     </div>
                 </div>
-                 <p>Iis igitur est difficilius satis facere, qui se Latina scripta dicunt contemnere. in quibus hoc primum est in quo admirer, cur in gravissimis rebus non delectet eos sermo patrius, cum idem fabellas Latinas ad verbum e Graecis expressas non inviti legant. quis enim tam inimicus paene nomini Romano est, qui Ennii Medeam aut Antiopam Pacuvii spernat aut reiciat, quod se isdem Euripidis fabulis delectari dicat, Latinas litteras oderit?</p>
+                 <p>{{a.introduction}}</p>
 
             </div>         
         </div>

@@ -1,0 +1,34 @@
+
+
+{# partial de templates/ad/index.html.twig et templates/user/index.html.twig #}
+
+
+
+{# Création d'une variable pour être réutilisé un peu partout #}
+{# Générer un URL avec une function PATH pour accéder à un champ unique 
+				grâce à son ADN(slug) (1er param c'est le nom d'URL(qui est un tableau)et
+				qui récupéres tous les champs, le 2èm param c'est les autres variables 
+				présenté dans un tableau comme celui de JS càd séparé par le : (même 
+				syntaxe) ) #}
+{% set url = path('ads_single',{'slug':ad.slug}) %}
+
+<div class="col-md-4 mb-3">
+	<div class="card mb-3">
+		<h3 class="card-header">{{ad.rooms}}
+			chambres<strong>
+				{{ad.price}}
+				&euro;</strong>/nuit
+		</h3>
+		<a href="{{url}}">
+			<img style="height: 200px; width:100%; 	display: block;" src="{{ad.coverImage}}" alt="{	{ad.title}}" class="img-fluid">
+		</a>
+		<div class="card-body">
+			<h5 class="card-title">{{ad.title}}</h5>
+			<p>{{ad.introduction}}</p>
+			<a href="{{url}}" class="btn btn-primary">+ 	d'infos</a>
+		</div>
+		<div class="card-footer text-muted">
+			Pas encore noté
+		</div>
+	</div>
+</div>

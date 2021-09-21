@@ -56,10 +56,6 @@ class AdController extends AbstractController
         //$ad->addYe($images);
 
 
-
-
-
-
         //Lancer la fabrication de formulaire avec FORMBUILDER (c'est un gros Objet qui contient enorment des méthodes)
         //$form = $this->createFormBuilder($ad)
         // et configurer avec la methode add de formbuilder pour les champs qu'on a besoin
@@ -94,6 +90,8 @@ class AdController extends AbstractController
                 $manager->persist($image);
             }
 
+             //Relié l'author qui est connecté au formulaire (création d'une annonce) pour que les données seront enregistrées à l'author qui est connecté       
+             $ad->setAuthor($this->getUser());
 
             //Si soumission ok et validation ok, on demande à Doctrine de sauvegarder ces données dans la BD dans l'Objet $manager(Injection de dépendance)
             $manager->persist($ad);
@@ -116,8 +114,7 @@ class AdController extends AbstractController
     /**
      * L'URL qui permet d'afficher une annonce par rapport à son ADN slug 
      * @Route("/ads/{slug}", name="ads_single")
-     * 
-     * 
+     *  
      * Retourne une réponse
      * @return Response
      */

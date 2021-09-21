@@ -1,6 +1,6 @@
 /* GENERAL*/
 body {
-  background-color: #f3efef;
+  background-color: darkred;
 }
 .container {
   margin-top: 1.2em;
@@ -39,3 +39,15 @@ footer {
   color: #f3efef;
   
 }
+
+
+/* templates/user/index.html.twig*/
+img.avatar{width: 128px;height: 128px;border-radius: 50%;}
+img.avatar-medium{max-width: 64px;max-height: 64px;}
+img.avatar-small{max-width: 32px;max-height: 32px;}
+
+/*templates/ad/show.html.twig*/
+
+
+/*templates/inc/header.html.twig*/
+
