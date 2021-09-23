@@ -15,6 +15,9 @@
         </div>
         <div class="col-9 mb-5">
             <h1>{{user.fullname}}</h1>
+            {#{{ dump(user) }}#}
+            {#{{ dump(app.user) }}#}
+            {#{{ dump(user) }}#}
             {# Vérifier si l'utilisateur connecté est le propriétaire du page de profil #}{# (same as) en twig veut dire (===)en php #}
             {% if user is same as (app.user) %}
                 {# Si oui, il peut avoir accès à la modification de sa page profile et sa page de mot de passe #}
@@ -42,8 +45,9 @@
         {# Affichage de l'annonce de l'User avec le partial #}
         <div class="row">
             {% for ad in user.ads %}
-                
+
                 {% include 'ad/_ad.html.twig' %}
+                
             {% endfor %}
         </div>
     {% else %}    

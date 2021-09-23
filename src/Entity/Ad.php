@@ -70,12 +70,15 @@ class Ad
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="ad",orphanRemoval=true)
      */
     private $yes;
+    //Une annonce peut avoir plusieurs images(secondaires)
+
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="ads")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
+    //Plusieurs annonces peuvent appartenir qu'à un seul utilisteur 
 
     public function __construct()
     {

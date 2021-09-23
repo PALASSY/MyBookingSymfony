@@ -85,6 +85,12 @@ class User implements UserInterface
      */
     private $ads;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="userRole")
+     */
+    private $userRoles;
+    //Un utilisateur peut avoir plusieurs annonces 
+
 
     //Concater le nom et prénom 
     public function getFullname(){
@@ -94,6 +100,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->ads = new ArrayCollection();
+        $this->userRoles = new ArrayCollection();
     }
 
 
@@ -257,7 +264,14 @@ class User implements UserInterface
      * @see UserInterface
      */
     public function getRoles(){
-        return ['ROLE_USER'];
+        //On va insérére tous les rôles existant avec l'aide de ArrayCollection
+        $roles = $this->userRoles->map(function($role){
+           return $role->getTitle();
+        })->toArray();
+        //On peuple le tableau
+        $roles[]= 'ROLE_USER';
+        return $roles;
+        //return ['ROLE_USER'];
     }
 
     /**
@@ -290,6 +304,33 @@ class User implements UserInterface
      */
     public function getUsername(){
         return $this->email;
+    }
+
+    /**
+     * @return Collection|Role[]
+     */
+    public function getUserRoles(): Collection
+    {
+        return $this->userRoles;
+    }
+
+    public function addUserRole(Role $userRole): self
+    {
+        if (!$this->userRoles->contains($userRole)) {
+            $this->userRoles[] = $userRole;
+            $userRole->addUserRole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRole(Role $userRole): self
+    {
+        if ($this->userRoles->removeElement($userRole)) {
+            $userRole->removeUserRole($this);
+        }
+
+        return $this;
     }
    
    

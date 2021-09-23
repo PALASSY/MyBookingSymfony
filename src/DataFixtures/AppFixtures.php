@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Ad;
 use Faker\Factory;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
 use Doctrine\Persistence\ObjectManager;
@@ -30,7 +31,31 @@ class AppFixtures extends Fixture
         //Déclarer le faker et importer la class Factory
         $faker = Factory::create('FR-fr');
 
-        //Création de tableu vide pour les futures données de l'Objet user() après le setter
+        //Créer un user avec un Rôle Admin
+        $adminRole = new Role();
+        //On va garder la même écriture comme dans UserInterface() src/Entity/User.php->getRoles()
+        $adminRole->setTitle('ROLE_ADMIN');
+        //Enregistrer les données 
+        $manager->persist($adminRole);
+
+
+        //Créer un User Spécifique avec ce ROLE_ADMIN
+        //Instancier un nouvel Objet User.php
+        $adminUser = new User();
+        $adminUser->setFirstname('PALASSY')
+                  ->setLastname('Haingoniaina')
+                  ->setEmail('christianpalassy@hotmail.fr')
+                  ->setAvatar('https://randomuser.me/api/portraits/women/13.jpg')
+                  ->setMdphashed($this->encoder->hashPassword($adminUser, 'password'))
+                  ->setIntroduction($faker->sentence())
+                  ->setDescription("<p>" . join("<p></p>", $faker->paragraphs(5)) . "</p>")
+                  ->addUserRole($adminRole)
+                  ;
+        //On va enregistrer les données 
+        $manager->persist($adminUser);
+
+
+        //Création de tableau vide pour les futures données de l'Objet user() après le setter
         $users = [];
 
         //On va générer l'URL pour récupérer l'avatar(homme/femme) dans le web de randomuser.me

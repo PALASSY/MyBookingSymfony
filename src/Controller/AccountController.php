@@ -7,12 +7,13 @@ use App\Form\AccountType;
 use App\Entity\PasswordUpdate;
 use App\Form\RegistrationType;
 use App\Form\PasswordUpdateType;
+use Symfony\Component\Form\FormError;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -83,6 +84,7 @@ class AccountController extends AbstractController
      * Page de modification du profil de l'utilisateur connecté
      * 
      * @Route("/account/profile", name="account_profile")
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
     public function profile(Request $request,ObjectManager $manager){
@@ -109,6 +111,7 @@ class AccountController extends AbstractController
      * Page de modification du mot de passe de l'utilisateur connecté
      * 
      * @Route("/account/password-update", name="account_passwordupdate")
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
     public function updPassword(Request $request,UserPasswordHasherInterface $encoder,ObjectManager $manager)

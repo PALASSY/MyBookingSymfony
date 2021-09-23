@@ -31,6 +31,7 @@ class Image
      * @ORM\ManyToOne(targetEntity=Ad::class, inversedBy="yes")
      */
     private $ad;
+    //Plusieurs images appartiennent qu' à une seule annonce
 
     public function getId(): ?int
     {

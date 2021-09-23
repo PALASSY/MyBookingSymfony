@@ -49,5 +49,9 @@ img.avatar-small{max-width: 32px;max-height: 32px;}
 /*templates/ad/show.html.twig*/
 
 
-/*templates/inc/header.html.twig*/
+/*GENERAL*/
 
+a.btn,h1,p {
+    z-index: 10;
+    position: relative;
+}

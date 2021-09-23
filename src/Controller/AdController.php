@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdController extends AbstractController
@@ -40,11 +42,12 @@ class AdController extends AbstractController
     /**
      * Permet de créer une annonce à partir d'un formulaire
      * @Route("ads/new",name="ads_create");
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
     public function create(Request $request, ObjectManager $manager)
     {
-        //Instancier un nouvel Objet Ad(à importer)
+        //Créer un nouvel Objet Ad(à importer)
         $ad = new Ad();
 
         //Instancier un nouvel Objet Image(et à importer) ceci était utilisé pour servir d'exemple
@@ -81,7 +84,7 @@ class AdController extends AbstractController
 
         //Toujours vérifier la soumission et validation d'un formulaire
         if ($form->isSubmitted() && $form->isValid()) {
-            //Faire une boucle pour récuper toutes les images récupérées dans le formulaire de collection append
+            //Faire une boucle pour récuper toutes les images récupérées dans les champs de formulaire de collection append
             foreach ($ad->getYes() as $image) {
                 # modifier l'image dans l'Entity (Ad.php) càd rélié à l'annonce
                 $image->setAd($ad);
@@ -121,7 +124,7 @@ class AdController extends AbstractController
 
     //1er param c'est l'ADN(champ)
     //2èm param c'est la Class interface (type hiting)qui a été supprimé et remplacé par la Class src/Entity/Ad.php(class qui contient tous les champs)
-    //3èm param c'est l'instanciation de la Class
+    //2èm param c'est juste récupérer toutes les annonces
     public function show($slug, Ad $ad)
     {
         //Trouver un champ par rapport au slug(qui est la référence = ADN)
@@ -140,6 +143,7 @@ class AdController extends AbstractController
      * Permet d'éditer et modifier une annonce par rapport à son ADN slug à partir d'un formulaire
      * 
      * @Route("/ads/{slug}/edit", name="ads_edit")
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", message="Vous n'avez pas l'autorisation d'apporter une modification à cette annonce")
      * @return Response
      */
     public function edit(Ad $ad,Request $request,ObjectManager $manager){
@@ -170,5 +174,19 @@ class AdController extends AbstractController
         return $this->render('ad/edit.html.twig',['form'=>$form->createView(),'ad'=>$ad]);
     }
 
+    /**
+     * Page de suppression de l'annonce
+     * @Route("/ads/{slug}/delete", name="ads_delete")
+     * @Security("is_granted('ROLE_USER') and user == ad.getAuthor()", message="Vous ne pouvez pas accéder à cette page")
+     * @param Ad $ad
+     * @param ObjectManager $manager
+     * @return Response
+     */
+    public function delete(Ad $ad,ObjectManager $manager){
+        $manager->remove($ad);
+        $manager->flush();
+        $this->addFlash("success","L'annonce <em>{$ad->getTitle()}</em> a été supprimée");
+        return $this->redirectToRoute("ads_list");
+    }
 
 }
