@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation N°{{booking.id}}
+{% endblock %}
+
+{% block body %}
+{# Pour éviter la répétion de la méthode (booking.ad)/(booking.ad.author) on va crée un
+varible moins  longue #}
+{% set a = booking.ad %}
+{% set author = a.author %}
+
+
+  <main class="container">
+    <h1>Réservation du bien N°{{booking.id}}</h1>
+    <h2 class="h4">
+      <a href="{{path("ads_single", {"slug":a.slug})}}">{{a.title}}</a>
+    </h2>
+
+    {# Affichage de message de succès quand la réservation est enrégistrée dans BD, ici ce message flash() devrait être créer dans Controller(Booking.php) mais on va utiliser une methode GET pour intercepter l'url et c'est à partir de cette url qu'on crée un message flash #}
+    {% if app.request.query.get('alert') %}
+      <div class="alert alert-success">
+        Bravo! votre réservation auprès de:  
+        <a href="{{path("user_show",{'slug':author.slug})}}">
+          {{author.fullname}}
+        </a> 
+        qui porte le titre:  
+        <a href="{{path("ads_single",{'slug':a.slug})}}">
+          {{a.title}}
+        </a> 
+        a bien été réservée
+      </div>
+    {% endif %}
+
+
+    <div class="row">
+
+      <div class="col">
+        <div class="alert alert-light">
+          <h3>Détails</h3>
+          <hr>
+          <dl class="row">
+
+            <dt class="col-md-4">Numéro</dt>
+            <dd class="col-md-8">{{booking.id}}</dd>
+            
+            <dt class="col-md-4">Date d'arrivée</dt>
+            <dd class="col-md-8">{{booking.startDate | date('d/m/Y')}}</dd>
+
+            <dt class="col-md-4">Date de départ</dt>
+            <dd class="col-md-8">{{booking.endDate | date('d/m/Y')}}</dd>
+
+            <dt class="col-md-4">Créer le:</dt>
+            <dd class="col-md-8">{{booking.created | date('d/m/Y')}}</dd>
+
+            <dt class="col-md-4">Coût par nuit</dt>
+            <dd class="col-md-8">{{a.price}} &euro;</dd>
+
+            <dt class="col-md-4">Séjour pour:</dt>
+            <dd class="col-md-8">{{booking.duration}} {% if booking.duration <= 1%} nuit {% else %} nuits {% endif %}</dd>
+
+            <dt class="col-md-4">Montant total</dt>
+            <dd class="col-md-8">{{booking.amount}} &euro;</dd>
+
+            <dt class="col-md-4">Commentaire</dt>
+            <dd class="col-md-8">{{booking.comment}}</dd>
+
+          </dl>
+
+          <h3 class="alert-heading h4">Propriétaire du bien</h3>
+          <hr>
+          <div class="row">
+            <div class="col-md-3">
+              {# Ici on va prendre l'avatar de l'annonceur pas le reservateur #}
+              <a href="{{path('user_show',{'slug':author.slug})}}">
+               <img src="{{author.avatar}}" alt="Avatar de {{author.fullname}}" class="avatar avatar-big">
+              </a>
+            </div>
+            <div class="col-md-9">
+              <a href="{{path('user_show',{'slug':author.slug})}}">{{author.fullname}}</a><br>
+              <span class="badge badge-primary">{{author.ads|length}}{% if author.ads|length <= 1%}annonce{% else %}annonces{% endif %}</span>
+            </div>
+            <div>{{ author.description|raw }}{</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="alert alert-light hrefunderline">
+          <h3 class="alert-heading">Votre hébergement</h3>
+          <hr>
+          <h4 class="h5 mb-3">
+            <a href="{{path("ads_single",{"slug":a.slug})}}" class="btn btn-outline-info">{{a.title}}</a>
+          </h4>
+          <img src="{{a.coverImage}}" alt="Image de couverture de {{a.title}}" class="img-fluid mb-3">
+          {{a.content|raw}}
+          <a href="{{path("ads_single",{"slug":a.slug})}}" class="btn btn-outline-info">Détails</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+{% endblock %}
+

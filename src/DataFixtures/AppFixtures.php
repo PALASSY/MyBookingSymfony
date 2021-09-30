@@ -7,6 +7,7 @@ use Faker\Factory;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Booking;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -135,7 +136,7 @@ class AppFixtures extends Fixture
             $user = $users[mt_rand(0,count($users)-1)];
 
 
-            //Faire le setter de nouvel Objet Ad()
+            //Faire le setter de nouvel Objet Ad() l'annonce
             //On met mes valeurs en dur mais après on chargera dans faker
             $ad->setTitle($title)
                 ->setPrice(mt_rand(100,3000))
@@ -150,7 +151,7 @@ class AppFixtures extends Fixture
             $manager->persist($ad);
 
 
-            //Faire une boucle pour créer plusieurs annonces
+            //Faire une boucle pour créer plusieurs images
              for($j=1; $j<=mt_rand(2,5); $j++){
 
                  //Création de nouvel Objet avec la Class Image.php et importer la class Ad()
@@ -164,6 +165,49 @@ class AppFixtures extends Fixture
                       
                 //On persiste les données avec le param $manager
                 $manager->persist($image);                      
+             }
+
+
+
+             //Faire une boucle pour créer plusieurs réservation
+             for ($k=1; $k <= mt_rand(0,5)  ; $k++) { 
+
+                 //Création de nouvel Objet avec la Class Ad.php et importer la class Ad()
+                 $booking = new Booking();
+
+                 //Crée celui qui reserve (ce sont tous les utilisateurs)
+                 $booker = $users[mt_rand(0,count($users)-1)];
+
+                 //Créer l'annonce, ici c'est déjà récupérer par la nouvel Instance de l'Ojet(Booking) => $ad
+                 $ad = $ad;
+
+                 //La date du début de la réservation (c'est entre 3mois auparavant et maintenant)
+                 $startDate = $faker->dateTimeBetween('-3 months');
+
+                 //La date de fin de reservation (c'est à partir de la date du début de la réservation et(+) la durée du séjour, c'est une chiffre aléatoire(de 1jour à 14jours))
+                 //La durée du séjour (c'est un chiffre aléatoire )
+                 $duration = mt_rand(1,14);
+                 $endDate = (clone $startDate)->modify("+ $duration days");
+
+                 //La date de création de l'annonce (c'est entre 6mois auparavant et maintenant) 
+                 $created = $faker->dateTimeBetween('-6 months');
+
+                 //Le montant de la réservation(c'est le prix du produit dans l'annonce multiplier par la durée du séjour)
+                 $amount = $ad->getPrice() * $duration;
+
+                 //Créer un commentaire 
+                 $comment = $faker->paragraph();
+
+                 //On va setter la Réservation
+                 $booking->setBooker($booker)
+                         ->setAd($ad)
+                         ->setStartDate($startDate)
+                         ->setEndDate($endDate)
+                         ->setCreated($created)
+                         ->setAmount($amount)
+                         ->setComment($comment)
+                         ;
+                $manager->persist($booking);
              }
          }
 

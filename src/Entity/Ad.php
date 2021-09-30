@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=AdRepository::class)
- * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
  * fields={"title"},
  * message="Ce titre existe déjà, choisissez-en un autre"
@@ -78,11 +78,17 @@ class Ad
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
-    //Plusieurs annonces peuvent appartenir qu'à un seul utilisteur 
+
+    /**
+     * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="ad")
+     */
+    private $bookings;
+    //Plusieurs annonces peuvent appartenir qu'à un seul utilisateur 
 
     public function __construct()
     {
         $this->yes = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
 
@@ -107,6 +113,33 @@ class Ad
     }
 
 
+    //récupérér toutes les dates réservées dans un tableau
+    public function getNotAvailableDays(){ 
+        //Les mettre dans tableau
+        $notAvailableDays = [];
+
+        //On va utiliser la boucle
+        foreach ($this->bookings as $booking) {
+
+            //Récupérer dans un tableau l'interval des dates de début d'une réservation et la date de fin de réservation 
+            $resultat = range(
+               $booking->getStartDate()->getTimestamp(),
+               $booking->getEndDate()->getTimestamp(),
+               24*60*60
+            );
+
+        //Convertir ce timestamp en date toujours dans un tableau pour faciliter la fusion 
+        $days = array_map(function($day){
+            return new \DateTime(date('Y-m-d',$day));
+        },$resultat);
+        
+        //Fusionner ces 2 tableaux
+        $notAvailableDays = array_merge($notAvailableDays,$days);
+        }
+        //On returne ce tableau 
+        return $notAvailableDays;
+
+    }
 
 
 
@@ -237,6 +270,36 @@ class Ad
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getAd() === $this) {
+                $booking->setAd(null);
+            }
+        }
 
         return $this;
     }

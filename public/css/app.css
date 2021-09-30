@@ -37,6 +37,7 @@ footer {
   bottom: 0;
   width: 100%;
   color: #f3efef;
+  z-index: 10;
   
 }
 
@@ -45,8 +46,10 @@ footer {
 img.avatar{width: 128px;height: 128px;border-radius: 50%;}
 img.avatar-medium{max-width: 64px;max-height: 64px;}
 img.avatar-small{max-width: 32px;max-height: 32px;}
+img.avatar-big{max-width: 96px;max-height: 96px;}
 
-/*templates/ad/show.html.twig*/
+/*templates/inc/header.html.twig*/
+#accountDropdownlink{margin-left: 3em;}
 
 
 /*GENERAL*/
@@ -55,3 +58,9 @@ a.btn,h1,p {
     z-index: 10;
     position: relative;
 }
+
+.hrefunderline a{text-decoration: none;}
+
+
+/*templates/booking/book.html.twig*/
+.datepicker table tr td.disabled, .datepicker table tr td.disabled:hover{color:indianred!important ;text-decoration: line-through;}

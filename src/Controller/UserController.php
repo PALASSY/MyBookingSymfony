@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class UserController extends AbstractController
 {
     /**
+     * Afficher l'annonce de l'author
      * @Route("/user/{slug}", name="user_show")
      */
     public function index(User $user)

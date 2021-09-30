@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de reservation{% endblock %}
+
+{# Plugin calendar  CSS#}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+
+{% block body %}
+    {# Pour éviter la répétion de la méthode (ad.author) on va cré
+    une varible moins  longue #}
+    {% set a = ad.author %}
+
+    <div class="container">
+        <h1 class="h2">
+            Reservation pour l'annonce:
+            <small>{{ad.title}}</small>
+        </h1>
+        <h6>
+            Vous allez réservez le bien de:
+            <strong>
+                <em>{{a.fullname}}</em>
+            </strong>
+            </br>
+            Voir tout ses bien 
+            <a href="{{path('user_show',{'slug':a.slug})}}">Ici</a>
+        </h6>
+        {{ form_start(form)}}
+        <div class="row  mt-5">
+            <div class="col">{{form_row(form.startDate)}}</div>
+            <div class="col">{{form_row(form.endDate)}}</div>
+            <div class="col">
+                <h4>
+                    Montant du séjour
+                    <span id="amount">...</span> &euro;
+                </h4>
+                <span id="days">0</span>
+                nuit(s) à {{ad.price}} &euro; / nuit
+            </div>
+        </div>
+        <h3 class="mt-3">Avez-vous un commentaire?</h3>
+        {{form_row(form.comment)}}
+
+        <button class="btn btn-warning btn-large mt-3">Reserver</button>
+        <a href="{{path("ads_single",{"slug":ad.slug})}}" class="btn btn-primary  mt-3">Retour</a>
+
+        {{ form_end(form)}}
+    </div>
+{% endblock %}
+
+
+{# Plugin calendar JS #}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script>
+        $(document).ready(function(){
+            //Récupérer les ID des input(startDate/endDate) du formulaire de réservation
+            $("#booking_startDate, #booking_endDate").datepicker({
+                format:'dd/mm/yyyy',
+                startDate: new Date(),
+                todayHighlight: true,
+                datesDisabled: [
+                    {% for day in ad.notAvailableDays %}
+                        "{{ day.format('d/m/Y') }}",
+                    {% endfor %}
+                ]            
+            });
+
+            //Afficher dynamiquement le montant et la durée du séjour
+            $('#booking_startDate, #booking_endDate').on('change',calculateAmount);
+
+        });
+
+        //Function qui calcule la durée et le montant du séjour
+        function calculateAmount(){
+            //Récupérer la valeur de cahque input (date début et fin réservation)
+            const startDate = new Date($('#booking_startDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/, '$3-$2-$1'));
+            const endDate = new Date($('#booking_endDate').val().replace(/(\d+)\/(\d+)\/(\d{4})/, '$3-$2-$1'));
+
+
+            //Si les champs ne sont pas vides(et début<fin)
+            if(startDate && endDate && startDate < endDate){
+
+                //On va calculer la durée du séjour(date de fin - date début) pas l'inverse sinon BUG!!!
+                //On va transformer la date en millisecondes (écoulées depuis le 1er janvier 1970) pour faciliter le calcule (methode getTime() de JS)
+                const duree = endDate.getTime() - startDate.getTime();
+                //Et pour revenir en date on va diviser en millisecondes
+                const millisecondes = 24*60*60*1000;
+                const days = duree / millisecondes;
+
+                //On va pouvoir calculer le montant (durée * prix)
+                const amount = days * {{ad.price}};
+
+                //On va afficher dynamiquement (durée et montant) dans la balise <span> de notre page de réservation(ici)
+                $('#days').text(days);
+                $('#amount').text(amount.toLocaleString('fr-FR'));
+            }
+        }
+
+    </script>
+{% endblock %}
+
+
