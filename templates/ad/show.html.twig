@@ -43,7 +43,7 @@
                             <div class="carousel-item {% if loop.first  %}active{% endif %}">
                                 <img src="{{imageentity.url}}" class="d-block w-100" alt="...">
                                 <div class="carousel-caption d-none d-md-block">
-                                    <h1 class="h4">{{ad.title}}</h1>
+                                    <h1 class="h4 pt-5">{{ad.title}}</h1>
                                     <p>{{imageentity.caption}}</p>
                                 </div>                                    
                             </div>
@@ -58,7 +58,45 @@
                         <span class="visually-hidden">Suivant</span>
                     </button>
                 </div>
+                <hr>
 
+                {# Afficher les commentaires à condition qu'il en a au moins une #}
+                {% if ad.comments|length > 0 %}
+                    <div class="mt-5">
+                        <h5 class="mb-3 h6">Commentaire de {{ad.comments|length}} {% if ad.comments|length <= 1 %} voyageur{% else %} voyageurs {% endif %}</h5>
+
+                        {# La moyenne de note de commentaire #}
+                        <div class="row bg-light p-2 my-1 mb-5">
+                            <div class="col-5">La moyenne des notes sur:  {{ad.comments|length}}</div>
+                            <div class="col-7 ">
+                                {% include "inc/rating.html.twig" with {'rating':ad.avarageRatings} %}
+                            </div>
+                        </div>
+
+
+                        {# Afficher dans une boucle tous les commentaires #}
+                        {% for comment in ad.comments %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="{{comment.author.avatar}}" alt="image de {{comment.author.fullName}}" class="avatar avatar-small">
+                                    <small>{{comment.author.fullName}}</small>
+                                </div>
+                                <div class="col-md-8">
+                                    <p>Commentaire:</p>
+                                    <p>{{comment.content}}</p>
+                                    <p>
+                                        {# On va faire une boucle entre 1 et 5 pour afficher 5 étoiles (pleine et/ou vide) pour l'affichage des notes #}
+                                        {# définir la variable rating(inc/rating.html.twig)#}
+                                        {% include "inc/rating.html.twig" with {'rating':comment.rating} %}
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                        {% endfor %}
+                    </div>
+                {% else %}  
+                    <div class="mb-5">Pas encore de commentaire</div>  
+                {% endif %}
             </div>
 
 

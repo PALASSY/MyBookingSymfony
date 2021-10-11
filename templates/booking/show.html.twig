@@ -10,7 +10,7 @@ varible moins  longue #}
 {% set author = a.author %}
 
 
-  <main class="container">
+  <main class="container mb-5">
     <h1>Réservation du bien N°{{booking.id}}</h1>
     <h2 class="h4">
       <a href="{{path("ads_single", {"slug":a.slug})}}">{{a.title}}</a>
@@ -36,6 +36,7 @@ varible moins  longue #}
 
       <div class="col">
         <div class="alert alert-light">
+        {# Détail de la réservation #}
           <h3>Détails</h3>
           <hr>
           <dl class="row">
@@ -62,15 +63,16 @@ varible moins  longue #}
             <dd class="col-md-8">{{booking.amount}} &euro;</dd>
 
             <dt class="col-md-4">Commentaire</dt>
-            <dd class="col-md-8">{{booking.comment}}</dd>
+            <dd class="col-md-8">{{booking.comment | default('Aucun commentaire')}}</dd>
 
           </dl>
 
+
+          {# Ici c'est l'annonceur(proprietaire) pas le reservateur #}
           <h3 class="alert-heading h4">Propriétaire du bien</h3>
           <hr>
           <div class="row">
             <div class="col-md-3">
-              {# Ici on va prendre l'avatar de l'annonceur pas le reservateur #}
               <a href="{{path('user_show',{'slug':author.slug})}}">
                <img src="{{author.avatar}}" alt="Avatar de {{author.fullname}}" class="avatar avatar-big">
               </a>
@@ -79,11 +81,34 @@ varible moins  longue #}
               <a href="{{path('user_show',{'slug':author.slug})}}">{{author.fullname}}</a><br>
               <span class="badge badge-primary">{{author.ads|length}}{% if author.ads|length <= 1%}annonce{% else %}annonces{% endif %}</span>
             </div>
-            <div>{{ author.description|raw }}{</div>
+            <div>{{ author.description|raw }}</div>
+          </div>
+
+          {# avis(commentaire) d'un author(reservateur) par rapport à une annonce #}
+          <div class="text-center alert alert-info">
+            <h3 class="alert-heading h4">Votre avis pour le séjour</h3>
+            {% if date() > date(booking.endDate) %}
+              {# on va utiliser le function getter pour récupérer le commentaire d'un author par rapport à une annonce puis le setter parce c'est long #}
+              {% set comment = a.commentFromAuthor(app.user) %}
+              {# Si il y a déjà un avis et n'est pas null, on affiche l'avis #}
+              {% if comment is not null %}
+                <blockquote>{{comment.content}}</blockquote>
+                <strong>Note: </strong>{% include 'inc/rating.html.twig' with {'rating':comment.rating} %}
+              {% else %}
+                {# Sinon on affiche le formulaire pour receuillir l'avis #}
+                {{form_start(form)}}
+                {{form_widget(form)}}
+                  <button type="submit" class="btn btn-primary">Envoyer</button>
+                {{form_end(form)}}
+              {% endif %}
+            {% else %}
+              <p class="alert alert-warning">Vous ne pourrez pas noté cette annonce parceque votre séjour n'est pas encore terminé</p>
+            {% endif %}
           </div>
         </div>
       </div>
 
+      {# Détail de l'annonce #}
       <div class="col">
         <div class="alert alert-light hrefunderline">
           <h3 class="alert-heading">Votre hébergement</h3>

@@ -83,17 +83,24 @@ class Ad
      * @ORM\OneToMany(targetEntity=Booking::class, mappedBy="ad")
      */
     private $bookings;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="ad", orphanRemoval=true)
+     */
+    private $comments;
     //Plusieurs annonces peuvent appartenir qu'à un seul utilisateur 
+    
 
     public function __construct()
     {
         $this->yes = new ArrayCollection();
         $this->bookings = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
 
-
     /**
+     * avec le cycle de vie
      * Fonction qui permet d'initialiser le slug (avant persistance et avant la MAJ)
      * @ORM\PrePersist
      * @ORM\PreUpdate
@@ -110,6 +117,36 @@ class Ad
             $this->slug = $slugify->slugify($this->title);
         }
         
+    }
+
+
+    /**
+     * Récupérer un commentaire d'un author par rapport à l'annonce 
+     *
+     * @param User $author
+     * @return Comment|null
+     */
+    public function getCommentFromAuthor(User $author){
+        //Récupérer tous les commentaires
+        foreach($this->comments as $comment){
+            //Comparer l'author du commentaire à l'utilisateur connecté
+            if($comment->getAuthor() === $author)return $comment;
+            }
+         return null;
+    }
+
+
+    //Calculer la moyenne de note des commentaires
+    public function getAvarageRatings(){
+        //Calculer le nombre de toutes les notes de commentaire dans une annonce
+        $sum = array_reduce($this->comments->toArray(),function($total,$comment){
+            return $total + $comment->getRating();
+        },0);
+
+        //Calculer la moyenne de ces notes
+        //Toujours vérifier s'il y a des commentaires avant de lancer le calcul
+        if(count($this->comments)>0)return $sum / count($this->comments);
+        return 0;
     }
 
 
@@ -298,6 +335,36 @@ class Ad
             // set the owning side to null (unless already changed)
             if ($booking->getAd() === $this) {
                 $booking->setAd(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getAd() === $this) {
+                $comment->setAd(null);
             }
         }
 

@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Ad;
 use App\Entity\Booking;
+use App\Entity\Comment;
 use App\Form\BookingType;
+use App\Form\CommentType;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -77,8 +79,32 @@ class BookingController extends AbstractController
      * @param Booking $booking
      * @return Response
      */
-    public function show(Booking $booking){
-        return $this->render("booking/show.html.twig",['booking'=>$booking]);
+    public function show(Booking $booking,Request $request,ObjectManager $manager){
+        //On va créer une commentaire 
+        $comment = new Comment();
+        //On va créer une formulaire de commentaire à partir de ce nouveau commentaire 
+        $form = $this->createForm(CommentType::class,$comment);
+        //Récupérer les données par $POST
+        $form->handleRequest($request);
+        //Assurer la sécurité de validation et soumission
+        if ($form->isSubmitted() && $form->isValid()) {
+            //On va setter dans le commentaire l'annonce et l'author (puisqu'on les a supprimer volontairement dans src/Form.CommentType.php)
+            $comment->setAd($booking->getAd())
+                    ->setAuthor($this->getUser())
+                    ;
+
+            //On va enregistrer les données 
+            $manager->persist($comment);
+
+            //Enregistrer les données dans BD
+            $manager->flush();
+
+            //Afficher un message flash
+            $this->addFlash('success','Votre commentaire a été enregistré dans BD');
+        }
+
+
+        return $this->render("booking/show.html.twig",['booking'=>$booking,'form'=>$form->createView()]);
     }
 
 

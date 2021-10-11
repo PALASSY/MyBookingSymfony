@@ -1,0 +1,143 @@
+{% extends 'admin/base.html.twig' %}
+{% form_theme form _self %} 
+
+{% block title %}Modification d'une annonce
+{% endblock %}
+
+{% block body %}
+  <main class="container-fluid mb-5">
+    <h1 class="my-5 text-center h2">
+      Modification de l'annonce n°{{ad.id}}<hr>
+      <small>{{ad.title}}</small>
+    </h1>
+    <section class="col-md-8 offset-md-2 mb-5">
+      {{form_start(form)}}
+      <div class="row">
+        {# Affichage de l'annonce à modifier #}
+        <div class="col">
+          <div class="card bg-light">
+            <div class="card-header">
+              <h4 class="card-title text-center">Corriger l'annonce ?</h4>
+            </div>
+            <div class="card-body">
+              {{form_widget(form)}}
+              <div class="form-group text-center">
+                <button type="submit" class="btn btn-danger mt-3"><i class="fas fa-check"></i> Enregistrer</button>                        
+              </div>
+            </div>
+          </div>
+        </div>
+        {# Affichage des réservations/commentaires liés à cette annonce à modifié #}
+        <div class="col">
+          {# Réservations #}
+          <div class="card bg-light">
+            <div class="card-header">
+              <h4 class="card-title text-center">Les réservations</h4>
+            </div>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Voyageur</th>
+                    <th>Date de réservation</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                {# on va récupérer tous les réservations #}
+                {% for booking in ad.bookings %}
+                  <tr>
+                    <td>{{booking.id}}</td>
+                    <td>{{booking.booker.fullName}}</td>
+                    <td>{{booking.created|date('d/m/Y')}}</td>
+                    <td>
+                      <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-pen"></i></a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div><br>
+        {# Commentaires #}
+        <div class="card bg-light">
+          <div class="card-header">
+            <h4 class="card-title text-center">Les commentaires</h4>
+          </div>
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Voyageur</th>
+                  <th>Note</th>
+                  <th>Commentaire</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+              {# on va récupérer tous les réservations #}
+              {% for comment in ad.comments %}
+                <tr>
+                  <td>{{comment.id}}</td>
+                  <td>{{comment.author.fullName}}</td>
+                  <td class="text-center">{{comment.rating}}</td>
+                  <td>{{comment.content}}</td>
+                  <td>
+                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-pen"></i></a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+      </div>
+      {{form_end(form)}}
+    </section>
+    <br>
+    <br>
+  </main>
+
+{% endblock %}
+
+
+{# Création de nouveau block pour afficher les images et pouvoir les supprimer #}
+{% block _annonce_yes_widget %}
+  <p>Supprimer l'image ?</p>
+  {{form_widget(form)}}
+{% endblock %}
+
+{# Ce nouveau block affiche le(label/widget/help...) avec row venant de Collection-Entry #}
+{% block _annonce_yes_entry_row %}
+  {{form_widget(form)}}
+{% endblock %}
+
+{% block _annonce_yes_entry_widget %}
+  <div class="form-group bg-primary p-2 my-1 mb-3" id="block_{{id}}">
+    <div class="row align-items-center">
+      <div class="col-10 col-md-10">
+        {% if value %}
+          <div class="col-md-6 col">
+            <img src="{{value.url}}" alt="" class="img-fluid">
+          </div>
+        {% endif %}
+          <div class="col-md-6 col">
+            {{form_widget(form.caption)}}
+            {{form_errors(form.caption)}}
+          </div>
+      </div>
+      <div class="col-2 col-md-2 ">
+        <button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{# Quand on click sur le bouton de delete, on supprime l'image #}
+{% block javascripts %}
+  <script src="/js/ad.js"></script>
+{% endblock %}

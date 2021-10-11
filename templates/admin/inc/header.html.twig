@@ -1,0 +1,62 @@
+{# navbar extrait dans bootswatch.com #}
+<nav class="navbar navbar-expand-lg navbar-light bg-info">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="#">Mybooking</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle
+								navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarColor03">
+			<ul class="navbar-nav me-auto">
+				<li class="nav-item">
+					<a class="nav-link active" href="{{path('homepage')}} ">
+						<i class="fas fa-book-reader"></i>Accueil</a>
+				</li>
+				<li class="nav-item">
+					<a href="{{path("admin_ads_list")}}" class="nav-link">
+						<i class="fas fa-door-open"></i>Annonces</a>
+				</li>
+        <li class="nav-item">
+	        <a href="{{path("admin_bookings_list")}}" class="nav-link">
+		        <i class="fas fa-stopwatch-20"></i>Réservations</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{path("admin_comments_list")}}" class="nav-link">
+            <i class="fas fa-feather-alt"></i>Commentaires</a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="fas fa-user-tag"></i>Utilisateurs</a>
+        </li>
+			</ul>
+
+			<ul class="navbar-nav ml- align-items-center">
+				{# Si l'utilisateur n'est pas null(existe) #}
+				{% if app.user %}
+          <li class="nav-item">
+            <a href="{{path('homepage')}}" class="nav-link" target="_blank"><i class="far fa-eye"></i>Voir le site</a>
+          </li>
+					<li class="nav-item dropdown" role="group" aria-label="dropdown">
+						<a href="#" class="nav-link dropdown-toggle" id="accountDropdownlink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<img src="{{app.user.avatar}}" alt="Avatar de {{app.user.fullname}}" class="avatar avatar-medium">
+							{{app.user.fullname}}
+						</a>
+						{# Le lien #}
+						<div class="dropdown-menu dropdown-menu-right headerdropdown" arial-labelledby="accountDropdownLink">
+							<a href="{{path('admin_account_logout')}}" class="dropdown-item">Deconnexion</a>
+						</div>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('admin_account_login')}}">Connexion</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('account_register')}}">Inscription</a>
+					</li>
+				{% endif %}
+			</ul>
+
+		</div>
+	</div>
+</nav>
+

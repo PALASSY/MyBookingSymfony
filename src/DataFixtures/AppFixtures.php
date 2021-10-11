@@ -8,6 +8,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Booking;
+use App\Entity\Comment;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -208,6 +209,23 @@ class AppFixtures extends Fixture
                          ->setComment($comment)
                          ;
                 $manager->persist($booking);
+
+
+                //Les commentaires sont gérés en même temps que la réservation
+                //Faire une condition pour crée les commentaires aléatoire
+                if (mt_rand(0,1)) {
+                    //Instancié un nouvel Objet de Commentaire
+                    $comment = new Comment();
+
+                    //Puis setter le commentaire
+                    $comment->setContent($faker->paragraph())
+                            ->setRating(mt_rand(1,5))
+                            ->setAuthor($booker)
+                            ->setAd($ad)
+                            ;
+
+                    $manager->persist($comment);
+                }
              }
          }
 

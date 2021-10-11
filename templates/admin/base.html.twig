@@ -3,15 +3,16 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Welcome on mybooking
+			{% block title %}Gestion des annonces par l'administrateur
 			{% endblock %}
 		</title>
 		{# CSS minifié de bootswatch.com #}
 		<link
 		rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 		{# CSS #}
-		<link
-		rel="stylesheet" type="text/css" href="/css/app.css">
+		<link rel="stylesheet" type="text/css" href="/css/app.css">
+    <link rel="stylesheet" type="text/css" href="/css/admin.css">
+
 
 		{# JS #}
 		<script src="/js/jquery.compact.js"></script>
@@ -20,21 +21,21 @@
 		<script src="https://kit.fontawesome.com/bb0dbb8b96.js" crossorigin="anonymous"></script>
 
 
-
 		{# Run `composer require symfony/webpack-encore-bundle` and uncomment the following Encore helpers to start using Symfony UX #}
 		{% block stylesheets %}
 			{#{{ encore_entry_link_tags('app') }}#}
-		{% endblock %}	
-		
+		{% endblock %}
+
 	</head>
 	<body>
 
 		{# navbar extrait dans bootswatch.com factorisé et envoyé dans templates/inc/header.html.twig #}
-		{% include 'inc/header.html.twig' %}
+		{% include 'admin/inc/header.html.twig' %}
 
 		<!--Message flash : On va récupérer à l'aide d'une boucle le label/messages dans le Global app et sa methode flashes -->
 		{% for label,messages in app.flashes %}
-			<div class="container">
+			<div
+				class="container">
 				<!--Le messages est un tableau et il faut le récupérer à nouveau à l'aide d'une boucle -->
 				{% for message in messages %}
 					<div class="alert alert-{{label}}">
@@ -50,7 +51,7 @@
 
 
 		{# Bootstrap core Javascript factorisé et envoyé dans templates/inc/footer.html.twig #}
-		{% include 'inc/footer.html.twig' %}
+		{% include 'admin/inc/footer.html.twig' %}
 
 		{% block javascripts %}
 			{#{{ encore_entry_script_tags('app') }}#}
@@ -59,3 +60,4 @@
 
 	</body>
 </html>
+

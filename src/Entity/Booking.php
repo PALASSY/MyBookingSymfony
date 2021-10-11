@@ -3,8 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\BookingRepository;
+use Doctrine\ORM\Mapping\PreUpdate;
 
+use App\Repository\BookingRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -37,7 +38,7 @@ class Booking
      * @ORM\Column(type="datetime")
      * @Assert\Type(type="\DateTimeInterface", message="Le format doit être une date")
      * @Assert\NotNull
-     * @Assert\GreaterThan("now", message="Aucune chambre n'est disponible aujourd'hui")
+     * @Assert\GreaterThan("now", message="Aucune chambre n'est disponible aujourd'hui",groups="front")
      */
     private $startDate;
 
@@ -65,10 +66,11 @@ class Booking
 
 
     /**
+     * Avec Le cycle de vie
      * On va initialiser la date de création de la réservation
      * On va initialiser le montant de la réservation 
-     * On va initialiser la durée de la reservation 
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
     public function prePersist(){
         //Si le date de la réservation est vide alors on crée  une nouvelle date et elle est de ce jour
@@ -83,6 +85,7 @@ class Booking
         }
     }
 
+    //La durée n'a pas besoin de cycle de vie
     //Récupérer de la durée du séjour(nombre): on soustrait la date de la fin de la reservation à la date du début de la réservation(pas l'inverse sinon Bug car on obtient un nombre négatif)
     public function getDuration(){
         $duree = ($this->endDate)->diff($this->startDate);

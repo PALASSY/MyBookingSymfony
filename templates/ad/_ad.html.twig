@@ -39,8 +39,13 @@
 				</div>
 			</div>		
 		</div>
-		<div class="card-footer text-muted">
-			Pas encore noté
+		<div class="card-footer text-muted text-center">
+			{% if ad.comments|length > 0 %}
+				{% include 'inc/rating.html.twig' with {'rating' : ad.avarageRatings } %} sur {{ad.comments|length}} avis
+			{% else %}
+				<span>Pas encore noté</span>
+			{% endif %}
 		</div>
 	</div>
 </div>
+

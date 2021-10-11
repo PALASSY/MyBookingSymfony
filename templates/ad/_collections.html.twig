@@ -1,5 +1,5 @@
 {# Création de nouveau block pour personnalisé le champs de 
-collection #}
+collection/image #}
 {% block _annonce_yes_widget %}
 	<p>Ici vous pouvez ajouter des images supplémentaires</p>
 	<input type="hidden" id="widget-count" value="0">
@@ -29,14 +29,17 @@ Collection et uniquement les champs #}
 			<div class="col-md-10 col-10">
 				<div class="row">
 					<div class="col">
+						{# On récupère l'image à partir de son URL#}
 						{{form_widget(form.url)}}
 					</div>
 					<div class="col">
+						{# On récupère le titre de l'image #}
 						{{form_widget(form.caption)}}
 					</div>
 				</div>
 			</div>
 			<div class="col-md-2 col-2">
+				{# L'action se passe dans JS/ad.js#}
 				<button type="button" class="btn btn-danger" data-action="delete" data-target="#block_{{id}}">X</button>
 			</div>
 		</div>

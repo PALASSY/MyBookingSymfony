@@ -18,6 +18,19 @@
       </div>
       <div class="col-md-8">
         <h4 class="h5">{{booking.ad.title}}</h4>
+
+        {# avis(commentaire) d'un author(reservateur) par rapport à une annonce #}
+        <div>
+          {% set comment = booking.ad.commentFromAuthor(app.user) %}
+          {% set moyenne = booking.ad.avarageRatings %}
+          {% if comment is not null %}
+            <strong>Note que j'ai attribué: </strong>{% include "inc/rating.html.twig" with {'rating':comment.rating} %}<br> 
+            <strong>Note moyenne de l'annonce: </strong>{% include "inc/rating.html.twig" with {'rating':moyenne} %}
+          {% else %}
+            <p>Vous n'avez pas encore donné des notes(avis) pour ce séjour</p>
+          {% endif %}
+        </div>
+
         <p>Réservation n° {{booking.id}}</p>
         <p>du {{booking.startDate | date('d/m/Y')}} au {{booking.endDate | date('d/m/Y')}}</p>
         <p>pour un montant de : {{booking.amount}} &euro;</p>
