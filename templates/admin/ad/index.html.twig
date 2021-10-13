@@ -17,8 +17,8 @@
                 </tr>
             </thead>
             <tbody>
-                {# On va faire une boucle pour afficher toutes les données de l'annonce #}
-                {% for ad in ads %}
+                {# On va faire une boucle pour afficher toutes les données de l'annonce personnalisée #}
+                {% for ad in pagination.data %}
                         <tr>
                             <td>{{ad.id}}</td>
                             <td>{{ad.title}}</td>
@@ -40,5 +40,11 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {# Affichage de pagination #}
+        {{pagination.display()}}
+
+
     </div>
+    <br><br><br><br>
 {% endblock %}

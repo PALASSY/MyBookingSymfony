@@ -1,0 +1,29 @@
+
+{# Affichage de la pagination pour ads/comments/bookings #}
+{# route => c'est le nom de la @Route parceque il sera dynamique à chacune des pages #}
+
+<div class="d-flex justify-content-center">
+	<ul
+		class="pagination pagination-sm">
+		{# Chevron gauche => si la page initiale = 1 => chevron désactiver #}
+		<li
+			class="page-item {% if page == 1 %} disabled {% endif %}">
+			{# La liaison c'est la page actuelle -1 (décrémenter) #}
+			<a class="page-link" href="{{path(route,{'page': page-1 })}}">&laquo;</a>
+		</li>
+		{# Les pages à afficher à l'aide d'une boucle  à partant de 1 juqu'à la total de la page #}
+		{% for i in 1..pages %}
+			<li
+				class="page-item {% if page == i %}active{% endif %}">
+				{# C'est la page actuelle #}
+				<a class="page-link" href="{{path(route,{'page': i})}}">{{i}}</a>
+			</li>
+		{% endfor %}
+		{# Chevron droite => si la page initale = le nombre total des pages => chevron désactiver #}
+		<li
+			class="page-item {% if page == pages %} disabled {% endif %}">
+			{# C'est la page actuelle +1 (incrémenter) #}
+			<a class="page-link" href="{{path(route,{'page': page+1 })}}">&raquo;</a>
+		</li>
+	</ul>
+</div>

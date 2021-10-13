@@ -22,7 +22,7 @@
 			</thead>
 			<tbody>
 				{# On va faire une boucle pour afficher les données de commentaire #}
-				{% for booking in bookings %}
+				{% for booking in pagination.data %}
                 {% set adContent = booking.ad.content|slice(0, 40) ~ '...' %}
 					<tr>
 						<td>{{booking.id}}</td>
@@ -47,6 +47,11 @@
 				{% endfor %}
 			</tbody>
 		</table>
+
+		{# Affichage de pagination #}
+		{{pagination.display()}}
+
+
 	</div>
 	<br><br>
 {% endblock %}

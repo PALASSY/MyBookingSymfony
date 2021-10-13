@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Ad;
 use App\Form\AnnonceType;
 use App\Repository\AdRepository;
+use App\Service\Pagination;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,14 +17,24 @@ class AdminAdController extends AbstractController
 {
     /**
      * Page qui affiche toutes les annonces à modérer 
-     * @Route("/admin/ads", name="admin_ads_list")
+     * Ici il faut mettre le requirements pour utilisé le 2em param de la function et le restreindre
+     *
+     * @Route("/admin/ads/{page<\d+>?1}", name="admin_ads_list")
      * 
      * @return Response
      */
-    public function index(AdRepository $repo): Response
+    public function index(AdRepository $repo,$page, Pagination $paginationService): Response
     {
+
+        //On va setter l'Entity et la page actuelle iniatiale
+        $paginationService->setEntityClass(Ad::class)
+                          ->setPage($page)
+                          //->setRoute('admin_ads_list')
+                          ;
+
+        //Rétourner le service pagination (Entity personnalisée ,les nombres des pages et la page initiale)
         return $this->render('admin/ad/index.html.twig', [
-            'ads' => $repo->findAll()
+            'pagination'=>$paginationService
         ]);
     }
 

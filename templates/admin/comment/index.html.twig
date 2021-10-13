@@ -20,7 +20,7 @@
             </thead>
             <tbody>
                 {# On va faire une boucle pour afficher les données de commentaire #}
-                {% for comment in comments %}
+                {% for comment in pagination.data %}
                     <tr>
                         <td>{{comment.id}}</td>
                         <td>dateTimeImmutable</td>
@@ -43,6 +43,10 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {# Affichage de pagination #}
+        {{pagination.display()}}
+
     </div>
     <br><br>
 {% endblock %}
