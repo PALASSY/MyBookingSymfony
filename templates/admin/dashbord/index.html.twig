@@ -1,0 +1,139 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Dashbord{% endblock %}
+
+{% block body %}
+    <main class="container-fluid mt-5">
+        <h1 class="text-center mb-5">Dashbord</h1>
+        <div class="row">
+            
+            <div class="col">
+            	<div class="card bg-warning text-white text-center p-3">
+            		<div class="card-body">
+            			<div class="row">
+            				<div class="col-4">
+            					<i class="fas fa-door-open fa-3x"></i>
+            				</div>
+            				<div class="col-8">
+            					<h4 class="card-tilte">{{stats.ads}}</h4>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            <div class="col">
+            	<div class="card bg-primary text-white text-center p-3">
+            		<div class="card-body">
+            			<div class="row">
+            				<div class="col-4">
+            					<i class="fas fa-stopwatch-20 fa-3x"></i>
+            				</div>
+            				<div class="col-8">
+            					<h4 class="card-tilte">{{stats.bookings}}</h4>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+
+
+
+            <div class="col">
+                <div class="card bg-success text-white text-center p-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-comments fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                               <h4 class="card-tilte">{{stats.comments}}</h4> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col">
+                <div class="card bg-info text-white text-center p-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-user-tag fa-3x"></i>
+                            </div>
+                            <div class="col-8">
+                               <h4 class="card-tilte">{{stats.users}}</h4> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Affichages des meilleures et pires notes de commentaires #}
+        <section class="col-md-8 offset-md-2 my-5">
+        	<div class="row">
+        	{# Meilleures notes #}
+        		<div class="col">
+        			<div class="card bg-light">
+        				<div class="card-header">
+        					<h4 class="card-title text-center"><i class="fas fa-arrow-up"></i> Meilleures notes </h4>
+        				</div>
+        				<div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <th>Titre</th>
+                                <th>Utilisateur</th>
+                                <th>Note</th>
+                            </thead>
+                            <tbody>
+                            {% for ad in bestAds %}      
+                                <tr>
+                                    <td>{{ad.title|slice(0, 20) ~ '...'}}</td>
+                                    <td>
+                                        <img src="{{ad.avatar}}" alt="avatar de {{ad.firstname}}{{ad.lastname}}" class="avatar avatar-small">
+                                        <span>{{ad.firstname}}{{ad.lastname}}</span>
+                                    </td>
+                                    <td>{{ad.note|number_format(1,',','')}}</td>
+                                </tr
+                            {% endfor %}
+                            </tbody>
+                        </table>
+        				</div>
+        			</div>
+        		</div>
+        		{# Pires notes #}
+                <div class="col">
+                	<div class="card bg-secondary">
+                		<div class="card-header">
+                			<h4 class="card-title text-center"><i class="fas fa-arrow-down"></i> Pires notes </h4>
+                		</div>
+                		<div class="card-body">
+                			<table class="table table-hover">
+                				<thead>
+                					<th>Titre</th>
+                					<th>Utilisateur</th>
+                					<th>Note</th>
+                				</thead>
+                				<tbody>
+                                {% for ad in worstAds %}
+                					<tr>
+                						<td>{{ad.title|slice(0, 20) ~ '...'}}</td>
+                                        <td>
+                                            <img src="{{ad.avatar}}" alt="avatar de {{ad.firstname}}{{ad.lastname}}" class="avatar avatar-small">
+                                            <span>{{ad.firstname}}{{ad.lastname}}</span>
+                                        </td>                					
+                                    	<td>{{ad.note|number_format(1,',','')}}</td>
+                					</tr>
+                                 {% endfor %}
+                				</tbody>
+                			</table>
+                		</div>
+                	</div>
+                </div>
+        </section>        
+    </main>
+    <br><br><br>
+
+
+{% endblock %}

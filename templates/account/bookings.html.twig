@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes réservations{% endblock %}
+{% block title %}Réservations{% endblock %}
 
 
 {% block body %}
 
 <div class="container mt-5">
   <div class="bg-dark p-5 my-3">
-    <h2>Mes réservations</h2>
+    <h2>Mes {{app.user.bookings|length}}  réservations</h2>
   </div>
   {# On va récupérer toutes les réservation de l'user connecté #}
   {% for booking in app.user.bookings %}
@@ -40,6 +40,8 @@
 
   {% endfor %}
 
-</div>
+  
 
+</div>
+<br><br><br>
 {% endblock %}

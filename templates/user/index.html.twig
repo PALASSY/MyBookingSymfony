@@ -46,6 +46,7 @@
         <div class="row">
             {% for ad in user.ads %}
 
+                {# Ramarque idem dans templates/ad/index.html.twig : pas besoin de re-définir la variable GLOBAL parceque la boucle indique déjà le nom de la varibale (ad) #}
                 {% include 'ad/_ad.html.twig' %}
                 
             {% endfor %}

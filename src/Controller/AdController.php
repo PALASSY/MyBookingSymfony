@@ -8,6 +8,7 @@ use App\Entity\Image;
 //utilisé pour l'injection de dépendance
 use App\Form\AnnonceType;
 use App\Repository\AdRepository;
+use App\Service\Pagination;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,13 +22,18 @@ class AdController extends AbstractController
 {
     /**
      * Permet d'afficher toutes annonces
-     * @Route("/ads", name="ads_list")
+     * @Route("/ads/{page<\d+>?1}", name="ads_list")
      */
 
     //Ici AdRepository reflète la Class Ad et peut tout récupérer les champs
     //c'est type le hiting
-    public function index(AdRepository $repo)
+    public function index(AdRepository $repo,Pagination $paginationService,$page)
     {
+        //On va setter l'Entity et la page actuelle initiale
+        $paginationService->setEntityClass(Ad::class)
+                          ->setPage($page)
+                          ->setLimit(3)
+                          ;
 
         //Récupérer dans cette Class de Repository tous les champs(propriety: titre,slug,price,image...)
         $ads = $repo->findAll();
@@ -35,7 +41,7 @@ class AdController extends AbstractController
         //Rajouter dans le tableau ces champs récupérés
         return $this->render('ad/index.html.twig', [
             'controller_name' => 'Nos annonces',
-            'ads' => $ads
+            'pagination' => $paginationService
         ]);
     }
 

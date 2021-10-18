@@ -1,5 +1,5 @@
 {# navbar extrait dans bootswatch.com #}
-<nav class="navbar navbar-expand-lg navbar-light bg-info">
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="#">Mybooking</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle
@@ -9,8 +9,8 @@
 		<div class="collapse navbar-collapse" id="navbarColor03">
 			<ul class="navbar-nav me-auto">
 				<li class="nav-item">
-					<a class="nav-link active" href="{{path('homepage')}} ">
-						<i class="fas fa-book-reader"></i>Accueil</a>
+					<a class="nav-link active" href="{{path('admin_dashbord')}}">
+						<i class="fas fa-chart-line"></i>Tableau de bord</a>
 				</li>
 				<li class="nav-item">
 					<a href="{{path("admin_ads_list")}}" class="nav-link">
@@ -22,7 +22,7 @@
         </li>
         <li class="nav-item">
           <a href="{{path("admin_comments_list")}}" class="nav-link">
-            <i class="fas fa-feather-alt"></i>Commentaires</a>
+            <i class="fas fa-comments"></i>Commentaires</a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link">

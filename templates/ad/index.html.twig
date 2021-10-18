@@ -9,13 +9,17 @@
 		<h1 class="mt-5 mb-3">{{ controller_name }}</h1>
 		<div class="row">
 			{# Faire une boucle pour récuper nos éléments dans la BD, twig est capable d'aller chercher les champs même s'ils sont en mode privé #}
-			{% for ad in ads %}
+			{% for ad in pagination.data %}
 				
+				{# Remarque: ici pas besoin de re-définir la variable GLOBAL parceque la boucle affiche déjà le nom de la variable GLOBAL (ad) #}
 				{# Affichage de l'annonce de l'User avec le partial #}
 			  {% include 'ad/_ad.html.twig' %}
 				
 			{% endfor %}
 		</div>
+
+		{# Affichage de pagination #}
+		{{pagination.display()}}
 	</main>
 
 {% endblock %}

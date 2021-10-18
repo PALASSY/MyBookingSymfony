@@ -1,6 +1,6 @@
+{# ad = variable GLOBAL #}
 
-
-{# partial de templates/ad/index.html.twig et templates/user/index.html.twig #}
+{# partial de templates/ad/index.html.twig et templates/user/index.html.twig et templates/home.html.twig #}
 
 
 
@@ -20,7 +20,7 @@
 				&euro;</strong>/nuit
 		</h3>
 		<a href="{{url}}">
-			<img style="height: 200px; width:100%; 	display: block;" src="{{ad.coverImage}}" alt="{	{ad.title}}" class="img-fluid">
+			<img style="height: 200px; width:100%; 	display: block;" src="{{ad.coverImage}}" alt="{{ad.title}}" class="img-fluid">
 		</a>
 		<div class="card-body">
 			<h5 class="card-title">{{ad.title}}</h5>

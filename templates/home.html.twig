@@ -46,7 +46,7 @@
     <main class="container">
 
       <div class="jumbotron mt-5">
-        <h1 class="h2">{{ titre }}</h1>
+        <h1 class="h2">Site d'annonce</h1>
         <p class="lead">C'est un simple jumbotron</p>
         <hr class="my-4">
         <p>Utilise le typographie</p>
@@ -55,91 +55,24 @@
         </p>
       </div> 
 
-      <h3 class="h1 mt-5 mb-3">Offres spéciales</h3>
+      {# Les meilleures annonces à partir de Repository #}
+      <h3 class="h1 mt-5 mb-3">Les {{ads|length}} {% if ads|length <= 1 %}meilleure{% else %}meilleures{% endif %}  annonces</h3>
       <section class="row">
-        <article class="col-md-4">
-          <div class="card mb-3">
-            <h3 class="card-header">3 chambres<strong> 300 &euro;</strong>/nuit</h3>
-            <img style="height: 200; width:100%; display: block;" src="https://placeimg.com/640/480/arch" alt="Card image">
-            <div class="card-body">
-              <h5 class="card-title">Loft à Londres</h5>
-              <p>Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores</p>
-              <a href="#" class="btn btn-primary">+ d'infos</a>
-            </div>
-            <div class="card-footer text-muted">
-              Pas encore noté
-            </div>
-        </article>
-        <article class="col-md-4">
-          <div class="card mb-3">
-            <h3 class="card-header">2 chambres<strong> 500 &euro;</strong>/nuit</h3>
-            <img style="height: 200; width:100%; display: block;" src="https://placeimg.com/640/480/nature" alt="Card image">
-            <div class="card-body">
-              <h5 class="card-title">New York</h5>
-              <p>Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores</p>
-              <a href="#" class="btn btn-primary">+ d'infos</a>
-            </div>
-            <div class="card-footer text-muted">
-              Pas encore noté
-            </div>
-        </article>
-        <article class="col-md-4">
-          <div class="card mb-3">
-            <h3 class="card-header">2 chambres<strong> 322 &euro;</strong>/nuit</h3>
-            <img style="height: 200px; width:100%; display: block;" src="https://placeimg.com/640/480/people" alt="Card image">
-            <div class="card-body">
-              <h5 class="card-title">Dubai</h5>
-              <p>Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores Lorem ipsuml dolores</p>
-              <a href="#" class="btn btn-primary">+ d'infos</a>
-            </div>
-            <div class="card-footer text-muted">
-              Pas encore noté
-            </div>
-        </article>
+      {% for data in ads %}
+        {% include "ad/_ad.html.twig" with {'ad':data.annonce} %}
+      {% endfor %}
       </section>
 
-      <h3 class="h1 mt-5 mb-3">Nos meilleurs annonçeurs</h3>
-      <section class="row">
-        <article class="col-md-3">
-          <div class="card mb-3">
-            <h3 class="card-header text-white bg-warning">Cooper Mike</h3>
-            <div class="card-body">
-              <img src="https://place-hold.it/64x64" alt="avatar de ..." class="float-left">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-              <a href="#" class="btn btn-warning">+ d'infos</a>
-            </div>
-        </article>
-        <article class="col-md-3">
-          <div class="card mb-3">
-            <h3 class="card-header text-white bg-warning">Jarod Steeve</h3>
-            <div class="card-body">
-              <img src="https://place-hold.it/64x64" alt="avatar de ..." class="float-left">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-              <a href="#" class="btn btn-warning">+ d'infos</a>
-            </div>
-        </article>
-        <article class="col-md-3">
-          <div class="card mb-3">
-            <h3 class="card-header text-white bg-warning">Amir Yasar</h3>
-            <div class="card-body">
-              <img src="https://place-hold.it/64x64" alt="avatar de ..." class="float-left">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-              <a href="#" class="btn btn-warning">+ d'infos</a>
-            </div>
-        </article>
-        <article class="col-md-3">
-          <div class="card mb-3">
-            <h3 class="card-header text-white bg-warning">Booby Brown</h3>
-            <div class="card-body">
-              <img src="https://place-hold.it/64x64" alt="avatar de ..." class="float-left">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-              <a href="#" class="btn btn-warning">+ d'infos</a>
-            </div>
-        </article>
-      </section>
 
+      {# Les meilleures annonceur #}
+      <h3 class="h1 mt-5 mb-3">Le top {{users|length}} des annonçeurs</h3>
+      <section class="row">
+        {% for data in users %}
+          {% include "user/_user.html.twig" with {'user':data.annoceur} %}
+        {% endfor %}
+      </section>
 
     </main>       
- 
+  <br><br><br>
 {% endblock %}
 
